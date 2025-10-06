@@ -1,0 +1,29 @@
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    width: 400px;
+    height: 400px;
+    border: 1px solid black;
+}
+
+.container .container-item {
+    width: 25%;
+    height: 25%;
+    box-sizing: border-box;
+    background-color: #28a745;
+    border: 1px solid white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 24px;
+}
+
+.img {
+    height: 100%;
+    width: 100%;
+}
+
+.finish {
+    margin-top: 10px;
+}
