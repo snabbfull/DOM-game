@@ -11,6 +11,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   game.append(finishGame);
 
+  // Контейнер для счёта
+  const scoreDisplay = document.createElement("div");
+  scoreDisplay.classList.add("score-display");
+  game.prepend(scoreDisplay);
+
   const container = document.querySelector(".container");
 
   for (let i = 0; i < 16; i++) {
@@ -24,10 +29,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const gameLogic = new GameLogic(container);
   const myContainer = new MyContainer(container, gameLogic);
 
+  // Отображаем счёт ВНЕ игрового контейнера
+  scoreDisplay.innerHTML = gameLogic.renderScores();
+
   const randomImgInterval = setInterval(() => {
     if (!gameLogic.isGameOver) {
       myContainer.deleteRandomImage();
       myContainer.getRandomImage();
+      scoreDisplay.innerHTML = gameLogic.renderScores();
     }
   }, 1000);
 

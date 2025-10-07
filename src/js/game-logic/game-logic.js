@@ -51,4 +51,11 @@ export default class GameLogic {
       element.removeEventListener("click", this.onGoblinClick);
     });
   }
+
+  renderScores() {
+    return `
+      <div class="score hits">Попаданий: ${this.winScore}</div>
+      <div class="score misses">Промахов: ${this.loseScore}</div>
+    `.trim();
+  }
 }
