@@ -40,6 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
         gameLogic.isInactive();
         gameLogic.resetIsClicked();
       }
+      gameLogic.resetIsClicked();
       scoreDisplay.innerHTML = gameLogic.renderScores();
     }
   }, 1000);
