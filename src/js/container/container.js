@@ -1,10 +1,25 @@
 import goblinImg from "../../img/goblin.png";
+import hammer from "../../img/hammer.png";
 
 export default class MyContainer {
   constructor(element, gameLogic) {
     this._element = element;
     this.gameLogic = gameLogic;
     this.lastIndex = null;
+
+    this.defaultCursor = "auto";
+    this.customCursor = hammer;
+
+    this.containerItems = this._element.querySelectorAll(".container-item");
+    this.containerItems.forEach((element) => {
+      element.addEventListener("mouseover", () => {
+        element.style.cursor = `url(${this.customCursor}), auto`;
+      });
+
+      element.addEventListener("mouseout", () => {
+        element.style.cursor = this.defaultCursor;
+      });
+    });
   }
 
   deleteRandomImage() {
