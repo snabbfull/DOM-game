@@ -4,6 +4,7 @@ export default class GameLogic {
     this.winScore = 0;
     this.loseScore = 0;
     this.isGameOver = false;
+    this.isClicked = null;
     this.onGoblinClick = this.onGoblinClick.bind(this);
 
     this.gameTarget = this._element.querySelectorAll(".container-item");
@@ -13,6 +14,7 @@ export default class GameLogic {
   }
 
   onGoblinClick(e) {
+    this.isClicked = true;
     if (this.isGameOver) return;
 
     if (e.target.tagName === "IMG") {
@@ -22,6 +24,16 @@ export default class GameLogic {
       this.loseScore += 1;
       this.checkLose();
     }
+  }
+
+  resetIsClicked() {
+    this.isClicked = null;
+  }
+
+  isInactive() {
+    this.isClicked = false;
+    this.loseScore += 1;
+    this.checkLose();
   }
 
   resetGame() {
@@ -35,6 +47,7 @@ export default class GameLogic {
       this.isGameOver = true;
       alert("Вы победили");
       this.resetGame();
+      this.resetIsClicked();
     }
   }
 
@@ -43,6 +56,7 @@ export default class GameLogic {
       this.isGameOver = true;
       alert("Вы проиграли");
       this.resetGame();
+      this.resetIsClicked();
     }
   }
 

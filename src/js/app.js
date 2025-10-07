@@ -36,6 +36,10 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!gameLogic.isGameOver) {
       myContainer.deleteRandomImage();
       myContainer.getRandomImage();
+      if (!gameLogic.isClicked) {
+        gameLogic.isInactive();
+        gameLogic.resetIsClicked();
+      }
       scoreDisplay.innerHTML = gameLogic.renderScores();
     }
   }, 1000);
