@@ -57,6 +57,7 @@ export default class MyContainer {
     const imgElement = document.createElement("img");
     imgElement.src = goblinImg;
     imgElement.classList.add("img");
+    imgElement.setAttribute("alt", "Гоблин");
 
     //Помещаем картинку в рандомный div из актуального списка
     randomItem.append(imgElement);

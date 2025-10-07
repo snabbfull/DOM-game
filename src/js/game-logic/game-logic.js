@@ -1,10 +1,11 @@
 export default class GameLogic {
-  constructor(element) {
+  constructor(element, onGameEnd) {
     this._element = element;
+    this.onGameEnd = onGameEnd;
     this.winScore = 0;
     this.loseScore = 0;
     this.isGameOver = false;
-    this.isClicked = null;
+    this.isClicked = false;
     this.onGoblinClick = this.onGoblinClick.bind(this);
 
     this.gameTarget = this._element.querySelectorAll(".container-item");
@@ -14,10 +15,12 @@ export default class GameLogic {
   }
 
   onGoblinClick(e) {
-    this.isClicked = true;
     if (this.isGameOver) return;
+    // Если уже был клик по гоблину в этом раунде — выходим
+    if (this.isClicked && e.target.tagName === "IMG") return;
 
     if (e.target.tagName === "IMG") {
+      this.isClicked = true;
       this.winScore += 1;
       this.checkWin();
     } else {
@@ -27,36 +30,36 @@ export default class GameLogic {
   }
 
   resetIsClicked() {
-    this.isClicked = null;
+    this.isClicked = false;
   }
 
   isInactive() {
-    this.isClicked = false;
-    this.loseScore += 1;
-    this.checkLose();
+    if (!this.isClicked && !this.isGameOver) {
+      this.loseScore++;
+      this.checkLose();
+    }
   }
 
   resetGame() {
     this.winScore = 0;
     this.loseScore = 0;
     this.isGameOver = false;
+    this.isClicked = false;
   }
 
   checkWin() {
     if (this.winScore >= 5) {
       this.isGameOver = true;
-      alert("Вы победили");
+      this.onGameEnd?.("win");
       this.resetGame();
-      this.resetIsClicked();
     }
   }
 
   checkLose() {
     if (this.loseScore >= 5) {
       this.isGameOver = true;
-      alert("Вы проиграли");
+      this.onGameEnd?.("lose");
       this.resetGame();
-      this.resetIsClicked();
     }
   }
 

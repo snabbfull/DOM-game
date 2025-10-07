@@ -18,32 +18,57 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const container = document.querySelector(".container");
 
-  for (let i = 0; i < 16; i++) {
+  const elementsNumber = 16;
+  for (let i = 0; i < elementsNumber; i++) {
     const containerItem = document.createElement("div");
     containerItem.classList.add("container-item");
     containerItem.dataset.id = i;
 
     container.append(containerItem);
   }
+  const modal = document.getElementById("game-modal");
+  const modalTitle = modal.querySelector(".modal-title");
+  const modalBtn = document.getElementById("modal-btn");
+  modalBtn.addEventListener("click", () => {
+    modal.classList.remove("active");
+    gameLogic.resetGame();
+    scoreDisplay.innerHTML = gameLogic.renderScores();
+    startGameLoop(); // ← перезапускаем интервал!
+  });
 
-  const gameLogic = new GameLogic(container);
+  let randomImgInterval = null;
+
+  const gameLogic = new GameLogic(container, (result) => {
+    clearInterval(randomImgInterval);
+    modal.classList.add("active");
+    modalTitle.textContent =
+      result === "win" ? "Вы победили 🎉" : "Вы проиграли 😢";
+  });
   const myContainer = new MyContainer(container, gameLogic);
 
   // Отображаем счёт ВНЕ игрового контейнера
   scoreDisplay.innerHTML = gameLogic.renderScores();
 
-  const randomImgInterval = setInterval(() => {
-    if (!gameLogic.isGameOver) {
-      myContainer.deleteRandomImage();
-      myContainer.getRandomImage();
-      if (!gameLogic.isClicked) {
-        gameLogic.isInactive();
-        gameLogic.resetIsClicked();
+  function startGameLoop() {
+    randomImgInterval = setInterval(() => {
+      if (!gameLogic.isGameOver) {
+        if (gameLogic.isClicked) {
+          myContainer.deleteRandomImage();
+          myContainer.getRandomImage();
+          gameLogic.resetIsClicked();
+        } else {
+          myContainer.deleteRandomImage();
+          myContainer.getRandomImage();
+          gameLogic.isInactive();
+          gameLogic.resetIsClicked();
+        }
+        scoreDisplay.innerHTML = gameLogic.renderScores();
       }
-      gameLogic.resetIsClicked();
-      scoreDisplay.innerHTML = gameLogic.renderScores();
-    }
-  }, 1000);
+    }, 1000);
+  }
+
+  // 🟢 Запуск при первой загрузке
+  startGameLoop();
 
   // Завершение игры по кнопке
   finishGame.addEventListener("click", () => {
